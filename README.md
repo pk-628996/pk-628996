@@ -1,5 +1,8 @@
 ## Hi there 👋
 
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8161828048649769"
+     crossorigin="anonymous"></script>
 <!--
 **pk-628996/pk-628996** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
