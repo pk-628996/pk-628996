@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline PDF Merger</title>
+  <style>
+    #controls {
+      text-align: center;
+      margin: 20px;
+    }
+    #merged-pdf {
+      width: 100%;
+      height: 600px;
+      margin-top: 20px;
+    }
+    #download-link {
+      display: none;
+      margin-top: 20px;
+    }
+    .file-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .file-list li {
+      margin: 5px 0;
+    }
+    .metadata {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <input type="file" id="file-input" accept="application/pdf" multiple />
+    <div class="metadata">
+      <label>
+        Title: <input type="text" placeholder="Title" id="pdf-title" />
+      </label><br />
+      <label>
+        Author: <input type="text" placeholder="Author" id="pdf-author" />
+      </label><br />
+      <label>
+        Subject: <input type="text" placeholder="Subject" id="pdf-subject" />
+      </label><br />
+      <label>
+        Keywords: <input type="text" placeholder="Keywords" id="pdf-keywords" />
+      </label><br />
+    </div>
+    <button id="merge">Merge PDFs</button>
+    <ul id="file-list" class="file-list"></ul>
+    <a id="download-link">Download Merged PDF</a>
+  </div>
+
+  <object id="merged-pdf" type="application/pdf" data="" width="100%" height="600px"></object>
+
+  <!-- Include pdf-lib.min.js from the local directory -->
+  <script src="pdf-lib.min.js"></script>
+
+  <script>
+    const { PDFDocument } = PDFLib;
+    const fileListElement = document.getElementById('file-list');
+    let selectedFiles = [];
+
+    document.getElementById('file-input').addEventListener('change', handleFileSelect);
+    document.getElementById('merge').addEventListener('click', mergePdfs);
+
+    function handleFileSelect(event) {
+      selectedFiles = Array.from(event.target.files);
+      displayFileList();
+    }
+
+    function displayFileList() {
+      fileListElement.innerHTML = '';
+      selectedFiles.forEach((file, index) => {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        li.setAttribute('data-index', index);
+        fileListElement.appendChild(li);
+      });
+    }
+
+    async function mergePdfs() {
+      if (selectedFiles.length === 0) {
+        alert('Please select at least one PDF file.');
+        return;
+      }
+
+      const mergedPdf = await PDFDocument.create();
+
+      for (const file of selectedFiles) {
+        const pdfBytes = await file.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        pages.forEach((page) => mergedPdf.addPage(page));
+      }
+
+      // Set metadata
+      const title = document.getElementById('pdf-title').value;
+      const author = document.getElementById('pdf-author').value;
+      const subject = document.getElementById('pdf-subject').value;
+      const keywords = document.getElementById('pdf-keywords').value;
+
+      if (title) mergedPdf.setTitle(title);
+      if (author) mergedPdf.setAuthor(author);
+      if (subject) mergedPdf.setSubject(subject);
+      if (keywords) mergedPdf.setKeywords(keywords.split(',').map(k => k.trim()));
+
+      const mergedPdfBytes = await mergedPdf.save();
+      const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+      const mergedPdfUrl = URL.createObjectURL(mergedPdfBlob);
+
+      // Display merged PDF in object tag
+      const objectTag = document.getElementById('merged-pdf');
+      objectTag.data = mergedPdfUrl;
+
+      // Create download link
+      const firstFileName = selectedFiles[0].name.replace(/\.pdf$/i, '');
+      const downloadLink = document.getElementById('download-link');
+      downloadLink.href = mergedPdfUrl;
+      downloadLink.download = `${firstFileName}-merged.pdf`;
+      downloadLink.style.display = 'block';
+      downloadLink.textContent = `Download ${firstFileName}-merged.pdf`;
+    }
+  </script>
+</body>
+</html>
