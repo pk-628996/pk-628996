@@ -89,7 +89,7 @@
 
       const mergedPdf = await PDFDocument.create();
 
-      for (const file of selectedFiles) {
+      for (const file of selectedFiles.sort()) {
         const pdfBytes = await file.arrayBuffer();
         const pdfDoc = await PDFDocument.load(pdfBytes);
         const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
