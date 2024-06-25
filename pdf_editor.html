@@ -33,20 +33,20 @@
 </head>
 <body>
   <div id="controls">
-    <input type="file" id="file-input" accept="application/pdf" multiple />
+    <input type="file" id="file-input" accept="application/pdf" multiple>
     <div class="metadata">
       <label>
-        Title: <input type="text" placeholder="Title" id="pdf-title" />
-      </label><br />
+        Title: <input type="text" placeholder="Title" id="pdf-title">
+      </label><br>
       <label>
-        Author: <input type="text" placeholder="Author" id="pdf-author" />
-      </label><br />
+        Author: <input type="text" placeholder="Author" id="pdf-author">
+      </label><br>
       <label>
-        Subject: <input type="text" placeholder="Subject" id="pdf-subject" />
-      </label><br />
+        Subject: <input type="text" placeholder="Subject" id="pdf-subject">
+      </label><br>
       <label>
-        Keywords: <input type="text" placeholder="Keywords" id="pdf-keywords" />
-      </label><br />
+        Keywords: <input type="text" placeholder="Keywords" id="pdf-keywords">
+      </label><br>
     </div>
     <button id="merge">Merge PDFs</button>
     <ul id="file-list" class="file-list"></ul>
@@ -91,7 +91,7 @@
 
       for (const file of selectedFiles.sort()) {
         const pdfBytes = await file.arrayBuffer();
-        const pdfDoc = await PDFDocument.load(pdfBytes,{ ignoreEncryption: true });
+        const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
         const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
         pages.forEach((page) => mergedPdf.addPage(page));
       }
