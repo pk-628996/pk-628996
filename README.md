@@ -1,6 +1,10 @@
 ## Hi there 👋
 
+- I am Prince Kumar pursuing B.Tech. at NIT Raipur in Metallurgical and Materials Engineering.
 
+- I am currently learning fundamentals of Metallurgical and Materials Engineering.
+
+![](https://github.com/favicon.ico)
 <!--
 **pk-628996/pk-628996** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
