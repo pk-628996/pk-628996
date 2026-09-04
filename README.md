@@ -8,11 +8,6 @@
 
 
 
-[![LinkedIn][linkedin-icon]][linkedin-profile]
-
-<!-- Place these at the bottom of your Markdown file -->
-[linkedin-icon]: https://linkedin.com/favicon.ico
-[linkedin-profile]: https://linkedin.com/in/prince-kumar-nitrr
 
 
 
